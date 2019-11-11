@@ -26,18 +26,6 @@ After installing all necessary packages (above), ensure that your working direct
 
 To visualize results, open `sims_plotting_file.R` and run line-by-line, viewing the plots. This script reads from the `.csv` results files created by `sims_running_file.R`. 
 
-## Authors
-
-Grant L. Vagle  
-University of Colorado  
-Boulder, CO 80309, USA  
-grant.vagle@colorado.edu  
-
-Christy M. McCain  
-University of Colorado  
-Boulder, CO 80309, USA  
-christy.mccain@colorado.edu
-
 
 ## Literature Cited
 May, F. (2017). mobsim: Spatial Simulation and Scale-Dependent Analysis of Biodiversity Changes. R package version 0.1.0. https://CRAN.R-project.org/package=mobsim
