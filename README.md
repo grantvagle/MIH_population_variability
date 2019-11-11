@@ -1,9 +1,7 @@
 # MIH_population_variability
 
 
-## Data S1
-
-The following files are contained within `DataS1.zip`:
+## Files
 
 `sims_functions_file.R`
 This file contains all of the functions required for running the simulations, including all three scenarios (Main sims, non-consecutive sampling, and random fixed relationship). Note, many of the functions are shared among simulation scenarios, and this is noted in comments in the file.
