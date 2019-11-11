@@ -1,5 +1,5 @@
 # MIH_population_variability
-Vagle, G. L. and C. M. McCain. submitted. Natural population variability may be masking the more-individuals hypothesis. *Ecology*.
+
 
 ## Data S1
 
