@@ -1,6 +1,6 @@
 ### PLOTTING FILE ###
 library(ggplot2)
-
+library(dplyr)
 
 ###### MAIN SIMS ######
 main_df = read.csv('main_sim_results.csv')
