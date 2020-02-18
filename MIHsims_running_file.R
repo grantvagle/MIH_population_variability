@@ -92,10 +92,93 @@ write.csv(randrel_df, file = "randrel_sim_results.csv", row.names = FALSE)
 
 
 
+######## VARYING COMMUNITY EVENNESS ########
+cv_abund = 1
+results_list_cv1 = do_sims_lnorm_range(fixed_rel = 'linear', 
+                               site_list = site_list, 
+                               taxonvar_arr = taxonvar_arr, 
+                               sample.windows = sample.windows, 
+                               numyears = numyears, 
+                               numsims = numsims, 
+                               cv_abund = cv_abund, 
+                               proportion = proportion, 
+                               r_ = r_ )
+
+write.csv(results_list_cv1[[1]], file = "cv1_results.csv", row.names = FALSE)
+write.csv(results_list_cv1[[2]], file = "cv1_log_norm_results.csv", row.names = FALSE)
+
+cv_abund = 4
+results_list_cv4 = do_sims_lnorm_range(fixed_rel = 'linear', 
+                                       site_list = site_list, 
+                                       taxonvar_arr = taxonvar_arr, 
+                                       sample.windows = sample.windows, 
+                                       numyears = numyears, 
+                                       numsims = numsims, 
+                                       cv_abund = cv_abund, 
+                                       proportion = proportion, 
+                                       r_ = r_ )
+
+write.csv(results_list_cv4[[1]], file = "cv4_results.csv", row.names = FALSE)
+write.csv(results_list_cv4[[2]], file = "cv4_log_norm_results.csv", row.names = FALSE)
+
+cv_abund = 8
+results_list_cv8 = do_sims_lnorm_range(fixed_rel = 'linear', 
+                                       site_list = site_list, 
+                                       taxonvar_arr = taxonvar_arr, 
+                                       sample.windows = sample.windows, 
+                                       numyears = numyears, 
+                                       numsims = numsims, 
+                                       cv_abund = cv_abund, 
+                                       proportion = proportion, 
+                                       r_ = r_ )
+
+write.csv(results_list_cv8[[1]], file = "cv8_results.csv", row.names = FALSE)
+write.csv(results_list_cv8[[2]], file = "cv8_log_norm_results.csv", row.names = FALSE)
 
 
+######## HIGHER DIVERSITY SIMULATIONS ########
+
+cv_abund = 4
+
+sites_18_div20 = data.frame(Productivity = seq(500, 6450, 350), Diversity = seq(from = 3, to = 20, length.out = 18) %>% round(digits = 0))
+div20 = do_sims(fixed_rel = 'linear', 
+                site_list = list(sites_18_div20), 
+                taxonvar_arr = taxonvar_arr, 
+                sample.windows = sample.windows, 
+                numyears = numyears, 
+                numsims = numsims, 
+                cv_abund = cv_abund, 
+                proportion = proportion, 
+                r_ = r_ )
+div20$max_div = rep(20)
+write.csv(div20, file = "div20_results.csv", row.names = FALSE)
 
 
+sites_18_div100 = data.frame(Productivity = seq(500, 6450, 350), Diversity = seq(from = 3, to = 100, length.out = 18) %>% round(digits = 0))
+div100 = do_sims(fixed_rel = 'linear', 
+                 site_list = list(sites_18_div100), 
+                 taxonvar_arr = taxonvar_arr, 
+                 sample.windows = sample.windows, 
+                 numyears = numyears, 
+                 numsims = numsims, 
+                 cv_abund = cv_abund, 
+                 proportion = proportion, 
+                 r_ = r_ )
+div100$max_div = rep(100)
+write.csv(div100, file = "div100_results.csv", row.names = FALSE)
 
+
+sites_18_div500 = data.frame(Productivity = seq(500, 6450, 350), Diversity = seq(from = 3, to = 500, length.out = 18) %>% round(digits = 0))
+div500 = do_sims(fixed_rel = 'linear', 
+                 site_list = list(sites_18_div500), 
+                 taxonvar_arr = taxonvar_arr, 
+                 sample.windows = sample.windows, 
+                 numyears = numyears, 
+                 numsims = numsims, 
+                 cv_abund = cv_abund, 
+                 proportion = proportion, 
+                 r_ = r_ )
+div500$max_div = rep(500)
+write.csv(div500, file = "div500_results.csv", row.names = FALSE)
 
 

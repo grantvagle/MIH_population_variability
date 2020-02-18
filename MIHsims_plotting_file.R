@@ -224,4 +224,151 @@ randrel_df %>%
 
 
 
+###### VARYING COMMUNITY EVENNESS ######
+
+cv1 = read.csv("cv1_results.csv") %>% cbind('cv_abund' = rep(1))
+cv4 = read.csv("cv4_results.csv") %>% cbind('cv_abund' = rep(4))
+cv8 = read.csv("cv8_results.csv") %>% cbind('cv_abund' = rep(8))
+
+cv_all = rbind(cv1, cv4, cv8)
+
+plot_samps = c(1,2,5,10,40) #sample durations to be plotted
+
+# slope
+cv_all %>%
+  mutate(cv_abund_char = as.factor(paste0('cv_abund=',cv_abund))) %>%
+  mutate(cv_abund_char = factor(cv_abund_char, levels = c('cv_abund=1', 'cv_abund=4', 'cv_abund=8'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  ggplot(aes(x = PV, y = Slope, group = PV, colour = as.factor(p_val_bin))) +
+  geom_jitter(show.legend = FALSE) +
+  facet_grid(cv_abund_char ~ samp_len_char)+
+  geom_abline(intercept = 1, slope = 0) +
+  theme_bw() +
+  scale_color_manual(values = c('red', 'black')) +
+  xlab("Population Variability") +
+  ylab("Detected Slope") 
+
+#proportion significant
+cv_all %>%
+  mutate(cv_abund_char = as.factor(paste0('cv_abund=',cv_abund))) %>%
+  mutate(cv_abund_char = factor(cv_abund_char, levels = c('cv_abund=1', 'cv_abund=4', 'cv_abund=8'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  group_by(Sample.Length, PV, SiteNum, samp_len_char, cv_abund_char) %>%
+  summarise(prop_sig = mean(p_val_bin)) %>%
+  ggplot(aes(x = PV, y = prop_sig, group = Sample.Length, colour = Sample.Length)) +
+  geom_line() +
+  facet_grid(cv_abund_char ~ .) +
+  theme_bw() +
+  xlab('Population Variability') +
+  ylab('Proportion Significant')
+
+#median r-squared
+cv_all %>% 
+  mutate(cv_abund_char = as.factor(paste0('cv_abund=',cv_abund))) %>%
+  mutate(cv_abund_char = factor(cv_abund_char, levels = c('cv_abund=1', 'cv_abund=4', 'cv_abund=8'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  group_by(Sample.Length, PV, SiteNum, samp_len_char, cv_abund_char) %>%
+  summarise(median_rsq = median(R_squared)) %>%
+  ggplot() +
+  geom_line(aes(x = PV, y = median_rsq, group = Sample.Length, colour = Sample.Length)) +
+  theme_bw() +
+  xlab('Population Variability') +
+  ylab(expression('Median R'^2)) +
+  ylim(c(0,1)) +
+  facet_grid(cv_abund_char ~ .)
+
+
+# looking at the log-normal distributions
+cv1_ln = read.csv("cv1_log_norm_results.csv")
+cv4_ln = read.csv("cv4_log_norm_results.csv")
+cv8_ln = read.csv("cv8_log_norm_results.csv")
+
+cv_all_ln = rbind(cv1_ln, cv4_ln, cv8_ln)
+
+sim_nums_to_keep = sample(1:max(cv_all_ln$SimNum), size = 10, replace = FALSE) #only show random sample for cleanliness
+pv_show = 0.01 # choose a PV value to show the log-norm plots for (doesn't matter since log-norm distribution does not depend on PV just needs to be chosen)
+div_show = c(20) # choose the diversity (aka which site) you want to see the log-norm distribution for
+
+cv_all_ln %>%
+  mutate(cv_abund_char = as.factor(paste0('cv_abund=',CV_abund))) %>%
+  mutate(cv_abund_char = factor(cv_abund_char, levels = c('cv_abund=1', 'cv_abund=4', 'cv_abund=8'))) %>%
+  filter(PV==pv_show, Diversity %in% div_show, SimNum %in% sim_nums_to_keep) %>%
+  ggplot() +
+  geom_line(aes(x = Sp_no, y = Init_abund, group = SimNum)) +
+  facet_grid(cv_abund_char ~ .) +
+  xlab("Species rank") +
+  ylab("Initial abundance") +
+  theme_bw()
+
+
+
+
+
+###### HIGHER DIVERSITY SIMULATIONS ######
+
+div20 = read.csv("div20_results.csv")
+div100 = read.csv("div100_results.csv")
+div500 = read.csv("div500_results.csv")
+
+div_all = rbind(div20, div100, div500)
+
+plot_samps = c(1,2,5,10,40) #sample durations to be plotted
+
+#slopes
+div_all %>%
+  mutate(max_div_char = as.factor(paste0('Max. richness=',max_div))) %>%
+  mutate(max_div_char = factor(max_div_char, levels = c('Max. richness=20', 'Max. richness=100', 'Max. richness=500'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  ggplot(aes(x = PV, y = Slope, group = PV, colour = as.factor(p_val_bin))) +
+  geom_jitter(show.legend = FALSE) +
+  facet_grid(max_div_char ~ samp_len_char)+
+  geom_abline(intercept = 1, slope = 0) +
+  theme_bw() +
+  scale_color_manual(values = c('red', 'black')) +
+  xlab("Population Variability") +
+  ylab("Detected Slope")
+
+
+#proportion significant
+div_all %>%
+  mutate(max_div_char = as.factor(paste0('Max. richness=',max_div))) %>%
+  mutate(max_div_char = factor(max_div_char, levels = c('Max. richness=20', 'Max. richness=100', 'Max. richness=500'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  group_by(Sample.Length, PV, SiteNum, samp_len_char, max_div_char) %>%
+  summarise(prop_sig = mean(p_val_bin)) %>%
+  ggplot(aes(x = PV, y = prop_sig, group = Sample.Length, colour = Sample.Length)) +
+  geom_line() +
+  facet_grid(max_div_char ~ .) +
+  theme_bw() +
+  xlab('Population Variability') +
+  ylab('Proportion Significant')
+
+#median r-squared
+div_all %>%
+  mutate(max_div_char = as.factor(paste0('Max. richness=',max_div))) %>%
+  mutate(max_div_char = factor(max_div_char, levels = c('Max. richness=20', 'Max. richness=100', 'Max. richness=500'))) %>%
+  mutate(samp_len_char = as.factor(paste0(Sample.Length, ' year'))) %>%
+  mutate(samp_len_char = factor(samp_len_char, levels = c('1 year', '2 year', '3 year', '4 year', '5 year', '7 year', '10 year', '15 year', '20 year', '30 year', '40 year'))) %>%
+  filter(Sample.Length %in% plot_samps) %>%
+  group_by(Sample.Length, PV, SiteNum, samp_len_char, max_div_char) %>%
+  summarise(median_rsq = median(R_squared)) %>%
+  ggplot() +
+  geom_line(aes(x = PV, y = median_rsq, group = Sample.Length, colour = Sample.Length)) +
+  theme_bw() +
+  xlab('Population Variability') +
+  ylab(expression('Median R'^2)) +
+  ylim(c(0,1)) +
+  facet_grid(max_div_char ~ .)
+
+
 
