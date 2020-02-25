@@ -1,5 +1,8 @@
 # MIH_population_variability
 
+[![DOI](https://zenodo.org/badge/221064850.svg)](https://zenodo.org/badge/latestdoi/221064850)
+
+
 This repository contains the simulation code for the manuscript: 
 
 Vagle, G. L., and C. M. McCain. *In review*. Natural population variability may be masking the more-individuals hypothesis. *Ecology*.
