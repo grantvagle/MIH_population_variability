@@ -5,7 +5,7 @@
 
 This repository contains the simulation code for the manuscript: 
 
-Vagle, G. L., and C. M. McCain. *In review*. Natural population variability may be masking the more-individuals hypothesis. *Ecology*.
+Vagle, G. L., and C. M. McCain. 2020. Natural population variability may be masking the more-individuals hypothesis. *Ecology* 101(5): e03035. [https://doi.org/10.1002/ecy.3035](https://doi.org/10.1002/ecy.3035)
 
 ## Files
 
