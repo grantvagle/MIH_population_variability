@@ -1,6 +1,6 @@
 # MIH_population_variability
 
-[![DOI](https://zenodo.org/badge/221064850.svg)](https://zenodo.org/badge/latestdoi/221064850)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.3686307.svg)](https://doi.org/10.5281/zenodo.3686307)
 
 
 This repository contains the simulation code for the manuscript: 
